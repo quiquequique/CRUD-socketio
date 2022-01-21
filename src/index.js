@@ -38,6 +38,18 @@ io.on('connection', (socket) => {
     notes = notes.filter((note) => note.id !== id);
     socket.emit('server:loadnotes', notes);
   });
+
+  socket.on('client:getnote', (id) => {
+    // console.log(id);
+    const returnedNote = notes.filter((note) => note.id === id)[0];
+    socket.emit('server:getnote', returnedNote);
+  });
+
+  socket.on('client:updatenote', (id) => {
+    console.log(id);
+    // notes = notes.filter((note) => note.id !== id);
+    socket.emit('server:loadnotes', notes);
+  });
 });
 
 httpServer.listen(3000);
