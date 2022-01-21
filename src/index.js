@@ -3,7 +3,8 @@ import { Server as SocketServer } from 'socket.io';
 import http from 'http';
 import { v4 as uuid } from 'uuid';
 
-const notes = [];
+// eslint-disable-next-line prefer-const
+let notes = [];
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -20,12 +21,22 @@ io.on('connection', (socket) => {
     console.log('devolvio el ping: ', socket.id);
   });
 
+  socket.emit('server:loadnotes', notes);
+
   socket.on('client:newnote', (newNote) => {
     const note = ({ ...newNote, id: uuid() });
 
     notes.push(note);
 
+    // console.log(notes);
+
     socket.emit('server:newnote', note);
+  });
+
+  socket.on('client:deletenote', (id) => {
+    // console.log(id);
+    notes = notes.filter((note) => note.id !== id);
+    socket.emit('server:loadnotes', notes);
   });
 });
 

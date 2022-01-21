@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 socket.on('ping', () => {
   console.log('listened');
 
