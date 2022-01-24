@@ -2,8 +2,11 @@
 /* eslint-disable no-unused-vars */
 const noteList = document.querySelector('#notes');
 const noteForm = document.querySelector('#noteForm');
-let title = document.querySelector('#title');
+const title = document.querySelector('#title');
 const description = document.querySelector('#description');
+
+// eslint-disable-next-line prefer-const
+let savedID = '';
 
 const noteUI = (note) => {
   const div = document.createElement('div');
@@ -29,7 +32,7 @@ const noteUI = (note) => {
   });
 
   btnUpdate.addEventListener('click', () => {
-    getNote(btnDelete.dataset.id);
+    getNote(btnUpdate.dataset.id);
     // updateNote(btnDelete.dataset.id);
   });
 
@@ -45,9 +48,4 @@ const renderNotes = (notes) => {
 
 const appendNote = (note) => {
   noteList.append(noteUI(note));
-};
-
-const noteToUpdate = (note) => {
-  console.log(note);
-  title = note.title;
 };

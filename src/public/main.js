@@ -8,5 +8,14 @@ socket.on('ping', () => {
 noteForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  saveNote(title.value, description.value);
+  if (savedID) {
+    updateNote(savedID, title.value, description.value);
+  } else {
+    saveNote(title.value, description.value);
+  }
+
+  title.value = '';
+  description.value = '';
+
+  title.focus();
 });

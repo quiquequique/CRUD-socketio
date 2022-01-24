@@ -30,25 +30,33 @@ io.on('connection', (socket) => {
 
     // console.log(notes);
 
-    socket.emit('server:newnote', note);
+    io.emit('server:newnote', note);
   });
 
   socket.on('client:deletenote', (id) => {
     // console.log(id);
     notes = notes.filter((note) => note.id !== id);
-    socket.emit('server:loadnotes', notes);
+    io.emit('server:loadnotes', notes);
   });
 
   socket.on('client:getnote', (id) => {
-    // console.log(id);
-    const returnedNote = notes.filter((note) => note.id === id)[0];
-    socket.emit('server:getnote', returnedNote);
+    console.log(id);
+    const returnedNote = notes.find((note) => note.id === id);
+    socket.emit('server:selectednote', returnedNote);
   });
 
-  socket.on('client:updatenote', (id) => {
-    console.log(id);
-    // notes = notes.filter((note) => note.id !== id);
-    socket.emit('server:loadnotes', notes);
+  socket.on('client:updatenote', (updatedNote) => {
+    // console.log(recivedNote);
+    notes = notes.map((note) => {
+      if (note.id === updatedNote.id) {
+        // eslint-disable-next-line no-param-reassign
+        note.title = updatedNote.title;
+        // eslint-disable-next-line no-param-reassign
+        note.description = updatedNote.description;
+      }
+      return note;
+    });
+    io.emit('server:loadnotes', notes);
   });
 });
 
